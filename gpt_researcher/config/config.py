@@ -33,7 +33,7 @@ class Config:
             setattr(self, key.lower(), value)
 
         # Handle RETRIEVER with default value
-        retriever_env = os.environ.get("RETRIEVER", "tavily")
+        retriever_env = os.environ.get("RETRIEVER", config.get("RETRIEVER", "tavily"))
         try:
             self.retrievers = self.parse_retrievers(retriever_env)
         except ValueError as e:
@@ -111,7 +111,7 @@ class Config:
 
         # config_path = os.path.join(cls.CONFIG_DIR, config_path)
         if not os.path.exists(config_path):
-            if config_path:
+            if config_path and config_path != "default":
                 print(f"Warning: Configuration not found at '{config_path}'. Using default configuration.")
                 if not config_path.endswith(".json"):
                     print(f"Do you mean '{config_path}.json'?")
